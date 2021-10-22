@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/score.mp3-983de35f98a7e61245c47367485cc62a.mp3str"
+
+[deps]
+
+source_file="res://assets/score.mp3"
+dest_files=[ "res://.import/score.mp3-983de35f98a7e61245c47367485cc62a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
