@@ -4,7 +4,7 @@ const TEXT_SIZES = [null, 0.43, 0.3, 0.23, 0.15]
 const COLOR_CHANGE_INTERVAL = 5
 const THEMES = [
     [Color(0.73, 0.73, 0.73), Color(0.87, 0.87, 0.87)], #0
-    [Color(0.84, 0.95, 0.82), Color(0.94, 1.00, 0.93)], #5
+    [Color(0.84, 0.95, 0.82), Color(0.61, 0.96, 0.55)], #5
     [Color(0.82, 0.95, 0.93), Color(0.93, 1.00, 0.98)], #10
     [Color(1.00, 0.92, 0.92), Color(1.00, 0.82, 0.82)], #15
     [Color(0.53, 0.38, 0.54), Color(0.35, 0.29, 0.36)], #20
@@ -27,18 +27,32 @@ const THEMES = [
 ]
 const THEME_CHANGE_TIME = 0.5
 
+export (PackedScene) var Bird
 var score : int
+var spikes := []
 var theme_tween
+var walls 
 
 func _ready():
+    walls = [$RightWall, $LeftWall]
+    spikes = get_tree().get_nodes_in_group('spikes')
     theme_tween = $ThemeTween
     update_theme(0, 0.0)
-    start_game()
+    start_game(true) #testin
 
-func start_game():
+func start_game(first_game):
     score = 0
     update_score_text()
-    $Bird.start_game()
+    update_theme(score, THEME_CHANGE_TIME)
+    var bird = Bird.instance()
+    bird.connect('score', self, 'score_a_point')
+    bird.position = Vector2(20, -50)
+    bird.do_tutorial = first_game
+    bird.skin = Save.get('skin_selected')
+    add_child(bird)
+    bird.start_game()
+    $RightWall.reset(0)
+    $LeftWall.reset(1)
 
 func update_score_text():
     $Score.text = str(score)
@@ -52,9 +66,13 @@ func update_theme(s, transition_time):
     theme_tween.start()
     theme_tween.interpolate_property($Accent, 'color', $Accent.color, theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
+    for spike in spikes:
+        var spike_polygon = spike.get_node('Polygon2D')
+        theme_tween.interpolate_property(spike_polygon, 'color', spike_polygon.color, theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 
-func _on_Bird_score():
+func score_a_point():
     score += 1
     update_score_text()
     if score % COLOR_CHANGE_INTERVAL == 0:
         update_theme(score, THEME_CHANGE_TIME)
+    walls[int($Bird.rightwards)].reset(score+1)
