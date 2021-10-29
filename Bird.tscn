@@ -1,19 +1,19 @@
 [gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://assets/birds/0/beakbottom.png" type="Texture" id=1]
+[ext_resource path="res://assets/birds/default/beakbottom.png" type="Texture" id=1]
 [ext_resource path="res://Bird.gd" type="Script" id=2]
 [ext_resource path="res://Trail.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/fly.mp3" type="AudioStream" id=4]
 [ext_resource path="res://FlyingAudio.gd" type="Script" id=5]
-[ext_resource path="res://assets/birds/0/beaktop.png" type="Texture" id=6]
-[ext_resource path="res://assets/birds/0/body.png" type="Texture" id=7]
-[ext_resource path="res://assets/birds/0/wing.png" type="Texture" id=8]
+[ext_resource path="res://assets/birds/default/beaktop.png" type="Texture" id=6]
+[ext_resource path="res://assets/birds/default/body.png" type="Texture" id=7]
+[ext_resource path="res://assets/birds/default/wing.png" type="Texture" id=8]
 [ext_resource path="res://Beak.gd" type="Script" id=9]
 [ext_resource path="res://assets/score.mp3" type="AudioStream" id=10]
 [ext_resource path="res://assets/death.mp3" type="AudioStream" id=11]
 [ext_resource path="res://DeathParticles.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Dead.tres" type="Material" id=13]
-[ext_resource path="res://assets/birds/0/eye.png" type="Texture" id=14]
+[ext_resource path="res://assets/birds/default/eye.png" type="Texture" id=14]
 
 [node name="Bird" type="Area2D"]
 scale = Vector2( 0.25, 0.25 )
@@ -70,7 +70,7 @@ volume_db = -4.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2( 3, 3 )
-polygon = PoolVector2Array( 29.343, -4.70785, 39.4512, 1.13908, 29.4421, 6.58961 )
+polygon = PoolVector2Array( -2.59709, -3.89697, 39.4512, 1.13908, -2.79599, 5.05373 )
 disabled = true
 
 [node name="Tween" type="Tween" parent="."]

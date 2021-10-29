@@ -1,8 +1,8 @@
 extends Node
 
-const TEXT_SIZES = [null, 0.43, 0.3, 0.23, 0.15]
-const COLOR_CHANGE_INTERVAL = 5
-const THEMES = [
+const TEXT_SIZES := [null, 0.43, 0.3, 0.23, 0.15]
+const THEME_CHANGE_INTERVAL := 5
+const THEMES := [
     [Color(0.73, 0.73, 0.73), Color(0.87, 0.87, 0.87)], #0
     [Color(0.84, 0.95, 0.82), Color(0.61, 0.96, 0.55)], #5
     [Color(0.82, 0.95, 0.93), Color(0.93, 1.00, 0.98)], #10
@@ -25,54 +25,102 @@ const THEMES = [
     [Color(0.17, 0.17, 0.17), Color(0.67, 0.73, 0.16)], #95
     [Color(0.00, 0.00, 0.00), Color(1.00, 0.00, 0.00)], #100
 ]
-const THEME_CHANGE_TIME = 0.5
+const THEME_CHANGE_TIME := 0.5
+
+const MAIN_MENU_SHOW_TIME := 0.6
 
 export (PackedScene) var Bird
 var score : int
 var spikes := []
 var theme_tween
+var menu_tween
 var walls 
+var bird
+var playing := true
 
 func _ready():
-    walls = [$RightWall, $LeftWall]
+    walls = [$Walls/Right, $Walls/Left]
     spikes = get_tree().get_nodes_in_group('spikes')
     theme_tween = $ThemeTween
+    menu_tween = $MenuTween
+    $MainMenu.rect_scale = Vector2(0, 0)
+    $MainMenu.modulate.a = 0
+    $MenuTransition.visible = false
     update_theme(0, 0.0)
     start_game(true) #testin
+    $SkinSelectMenu.rect_scale = Vector2(0, 0)
+    #$SkinSelectMenu.show_skins(theme)
 
 func start_game(first_game):
+    playing = true
     score = 0
     update_score_text()
-    update_theme(score, THEME_CHANGE_TIME)
-    var bird = Bird.instance()
+    
+    if !first_game: 
+        update_theme(score, MAIN_MENU_SHOW_TIME * 2)
+        menu_tween.interpolate_property($MainMenu, 'modulate:a', 1.0, 0.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        menu_tween.start()
+        yield(menu_tween, 'tween_completed')
+    
+    walls[0].reset(score)
+    walls[1].reset(score+1)
+    if !first_game: 
+        $MainMenu.rect_scale = Vector2(0, 0)
+        menu_tween.interpolate_property($HUD, 'modulate:a', 0.0, 1.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        menu_tween.start()
+        yield(menu_tween, 'tween_completed')
+    
+    bird = Bird.instance()
     bird.connect('score', self, 'score_a_point')
+    bird.connect('die', self, 'game_over')
     bird.position = Vector2(20, -50)
     bird.do_tutorial = first_game
     bird.skin = Save.get('skin_selected')
     add_child(bird)
     bird.start_game()
-    $RightWall.reset(0)
-    $LeftWall.reset(1)
 
 func update_score_text():
-    $Score.text = str(score)
-    $Score.rect_scale = Vector2(1, 1) * TEXT_SIZES[min(len(str(score)), len(TEXT_SIZES))]
+    $HUD/Score.text = str(score)
+    $HUD/Score.rect_scale = Vector2(1, 1) * TEXT_SIZES[min(len(str(score)), len(TEXT_SIZES))]
 
 func update_theme(s, transition_time):
-    var theme = THEMES[min(floor(s / COLOR_CHANGE_INTERVAL), len(THEMES)-1)]
-    theme_tween.interpolate_property($Background, 'color', $Background.color, theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+    Globals.theme = THEMES[min(floor(s / THEME_CHANGE_INTERVAL), len(THEMES)-1)]
+    theme_tween.interpolate_property($Background, 'color', $Background.color, Globals.theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
-    theme_tween.interpolate_property($Score, 'custom_colors/font_color', $Score.get('custom_colors/font_color'), theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+    theme_tween.interpolate_property($HUD/Score, 'custom_colors/font_color', $HUD/Score.get('custom_colors/font_color'), Globals.theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
-    theme_tween.interpolate_property($Accent, 'color', $Accent.color, theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+    theme_tween.interpolate_property($Accent, 'color', $Accent.color, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
     for spike in spikes:
         var spike_polygon = spike.get_node('Polygon2D')
-        theme_tween.interpolate_property(spike_polygon, 'color', spike_polygon.color, theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+        theme_tween.interpolate_property(spike_polygon, 'color', spike_polygon.color, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 
 func score_a_point():
     score += 1
     update_score_text()
-    if score % COLOR_CHANGE_INTERVAL == 0:
+    if score % THEME_CHANGE_INTERVAL == 0:
         update_theme(score, THEME_CHANGE_TIME)
-    walls[int($Bird.rightwards)].reset(score+1)
+    walls[int(bird.rightwards)].reset(score+1)
+
+func game_over():
+    playing = false
+    bird = null
+    
+    #edit save
+    Save.set('total_score', Save.get('total_score') + score)
+    Save.set('lifetime_games_played', Save.get('lifetime_games_played') + 1)
+    Save.set('currency', Save.get('currency') + score)
+    Save.set('best', max(score, Save.get('best')))
+    Save.save()
+        
+    menu_tween.interpolate_property($HUD, 'modulate:a', 1.0, 0.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    menu_tween.start()
+    yield(menu_tween, 'tween_completed')
+    
+    $MainMenu.rect_scale = Vector2(1, 1)
+    $MainMenu/Accent/Score/Score.text = str(score)
+    $MainMenu/Accent/Score/Best.text = str(Save.get('best'))
+    $MainMenu/Primary.modulate = Globals.theme[0]
+    $MainMenu/Accent.modulate = Globals.theme[1]
+    menu_tween.interpolate_property($MainMenu, 'modulate:a', 0.0, 1.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    menu_tween.start()

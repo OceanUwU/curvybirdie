@@ -8,14 +8,14 @@ const MAX_SPEED := 250.0
 const SPEED_INCREASE := (MAX_SPEED - INITIAL_SPEED) / Globals.FINAL_SCORE
 const INITIAL_GRAVITY := 11.4
 const TRAIL_INTERVAL := 0.2
-const FLAP_FREQUENCY := 0.18
 const ROTATION_SCALE := 0.12
 const TUTORIAL_EASE_TIME := 1.3
 
 export (PackedScene) var Trail
 export (PackedScene) var DeathParticles
 export (Material) var DeadMaterial
-var skin := '0' #tesing
+var flap_time := 0.18
+var skin : String
 var dead_eye_texture
 var trail_texture
 var rightwards := true
@@ -41,7 +41,7 @@ func _ready():
     flying_audio = $FlyingAudio
     wing = $Wing
     wing_tween = $Wing/Tween
-    tutorial = get_parent().get_node('Tutorial')
+    tutorial = get_node('/root/Main/Tutorial')
     
     #apply textures
     var skin_location = 'res://assets/birds/'+skin+'/'
@@ -57,14 +57,19 @@ func _ready():
 func start_game():
     playing = true
     moving = true
+    input_allowed = false
+    modulate.a = 0
+    $Tween.interpolate_property(self, 'modulate:a', 0.0, 1.0, 0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    $Tween.start()
     if do_tutorial:
         initiate_tutorial()
     else:
         end_tutorial()
+        yield(get_tree().create_timer(0.5), 'timeout')
+        input_allowed = true
 
 func initiate_tutorial():
     tutorial_active = true
-    input_allowed = false
     $Tween.interpolate_property(self, 'time_scale', 1.0, 0.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
     $Tween.interpolate_property(tutorial, 'modulate:a', 0.0, 1.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -82,7 +87,7 @@ func end_tutorial():
     $CollisionPolygon2D.disabled = false
     
 
-func _input(event):
+func _unhandled_input(event):
     if playing && input_allowed && event is InputEventMouseButton && event.button_index == 1:
         if event.pressed:
             if !flapped:
@@ -115,10 +120,10 @@ func _physics_process(delta):
         velocity.y += current_gravity * (-1 if flapping else 1) * time_scale
         position += velocity * delta * time_scale
 
-func _process(delta):
+func _process(_delta):
     $FlyingAudio.adjust(velocity.y * 0.017)
     if flapping && !wing_tween.is_active(): #if !wing_tween.is_active() && (flapping || wing.scale.y < 0):
-        wing_tween.interpolate_property(wing, 'scale:y', wing.scale.y, wing.scale.y * -1, FLAP_FREQUENCY, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+        wing_tween.interpolate_property(wing, 'scale:y', wing.scale.y, wing.scale.y * -1, flap_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
         wing_tween.start()
 
 func _on_Bird_area_shape_entered(_area_id, area, _area_shape, _local_shape):

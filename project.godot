@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "TextureButton",
+"class": "CircleButton",
+"language": "GDScript",
+"path": "res://CircleButton.gd"
+} ]
+_global_script_class_icons={
+"CircleButton": ""
+}
+
 [application]
 
 config/name="CurvyBirdie"
@@ -23,6 +33,7 @@ Save="*res://Save.gd"
 
 window/size/width=400
 window/size/height=800
+window/handheld/orientation="portrait"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 

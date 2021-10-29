@@ -6,8 +6,7 @@ func _ready():
     pass
 
 func set_enabled(enabled):
-    if !enabled:
-        $CollisionPolygon2D.position.x = -100
+    $CollisionPolygon2D.position.x = -100
         
     $Tween.interpolate_property($Polygon2D, 'scale:x', $Polygon2D.scale.x, 1 if enabled else 0, ENABLE_TIME, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     $Tween.start()
