@@ -116,9 +116,9 @@ func _physics_process(delta):
                 trail.scale = scale
                 get_parent().add_child(trail)
     if moving:
-        rotation = clamp(velocity.y * delta * ROTATION_SCALE, -0.5 * PI, 0.5 * PI) * (1 if rightwards else -1) * (1 if playing else -1)
         velocity.y += current_gravity * (-1 if flapping else 1) * time_scale
         position += velocity * delta * time_scale
+        rotation = clamp(velocity.y * delta * ROTATION_SCALE, -0.5 * PI, 0.5 * PI) * (1 if rightwards else -1) * (1 if playing else -1)
 
 func _process(_delta):
     $FlyingAudio.adjust(velocity.y * 0.017)
