@@ -14,5 +14,6 @@ func _on_PlayButton_pressed():
 
 func _on_SkinSelectButton_pressed():
     $Accent/SkinSelectButton.disabled = true
+    $Accent/PlayButton.disabled = true
     menu_transition.transition(self, skin_select_menu, false)
     skin_select_menu.show_skins()

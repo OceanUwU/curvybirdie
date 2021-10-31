@@ -58,7 +58,8 @@ func start_game(first_game):
     
     if !first_game: 
         update_theme(score, MAIN_MENU_SHOW_TIME * 2)
-        menu_tween.interpolate_property($MainMenu, 'modulate:a', 1.0, 0.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        menu_tween.stop_all()
+        menu_tween.interpolate_property($MainMenu, 'modulate:a', $MainMenu.modulate.a, 0.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         menu_tween.start()
         yield(menu_tween, 'tween_completed')
     
@@ -70,12 +71,17 @@ func start_game(first_game):
         menu_tween.start()
         yield(menu_tween, 'tween_completed')
     
+    var skin = Save.get('skin_selected')
+    var skins_unlocked = Save.get('skins_unlocked')
+    while skin == 'random':
+        skin = skins_unlocked[randi() % len(skins_unlocked)]
+    
     bird = Bird.instance()
     bird.connect('score', self, 'score_a_point')
     bird.connect('die', self, 'game_over')
     bird.position = Vector2(20, -50)
     bird.do_tutorial = first_game
-    bird.skin = Save.get('skin_selected')
+    bird.skin = skin
     add_child(bird)
     bird.start_game()
 

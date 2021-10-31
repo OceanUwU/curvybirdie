@@ -2,23 +2,23 @@ extends Control
 
 const SKINS = [ #[name, price, layer, angle]
     ['default', 0, 1, 0.0/13],
-    ['defaultred', 5, 1, 1.0/13],
-    ['defaultblue', 5, 1, 2.0/13],
-    ['defaultyellow', 5, 1, 3.0/13],
-    ['default4', 10, 1, 4.0/13],
-    ['default5', 15, 1, 5.0/13],
-    ['default6', 20, 1, 6.0/13],
-    ['default7', 25, 1, 7.0/13],
-    ['default8', 30, 1, 8.0/13],
-    ['default9', 35, 1, 9.0/13],
-    ['default10', 40, 1, 10.0/13],
-    ['default11', 45, 1, 11.0/13],
-    ['angel', 50, 1, 12.0/13],
+    ['defaultgreen', 5, 1, 1.0/13],
+    ['defaultdarkblue', 5, 1, 2.0/13],
+    ['defaultblue', 5, 1, 3.0/13],
+    ['defaultpurple', 5, 1, 4.0/13],
+    ['defaultmagenta', 5, 1, 5.0/13],
+    ['defaultpink', 5, 1, 6.0/13],
+    ['defaultred', 5, 1, 7.0/13],
+    ['defaultorange', 5, 1, 8.0/13],
+    ['defaultbrown', 5, 1, 9.0/13],
+    ['defaultblack', 5, 1, 10.0/13],
+    ['defaultwhite', 5, 1, 11.0/13],
+    ['defaultyellow', 5, 1, 12.0/13],
     
-    ['default12', 0, 2, 18.0/20],
-    ['default13', 0, 2, 19.0/20],
-    ['default14', 0, 2, 0.0/20],
-    ['default15', 0, 2, 1.0/20],
+    ['angel', 0, 2, 18.0/20],
+    ['demon', 0, 2, 19.0/20],
+    ['water', 500, 2, 0.0/20],
+    ['flowerbush', 0, 2, 1.0/20],
     ['default16', 0, 2, 2.0/20],
     ['default17', 0, 2, 8.0/20],
     ['default18', 0, 2, 9.0/20],
@@ -38,7 +38,7 @@ const SKINS = [ #[name, price, layer, angle]
     ['default30', 0, 4, 24.2/26],
     ['default31', 0, 4, 1.8/26],
     ['floob', 0, 4, 11.2/26],
-    ['default33', 0, 3.5, 1.0/2],
+    ['random', 40, 3.5, 1.0/2],
     ['default34', 0, 4, 14.8/26],
 ]
 const TIME_UNTIL_SKINS_SHOWED := 0.7
@@ -86,6 +86,7 @@ func show_skins():
         button.add_bird()
         add_child(button)
         buttons.append(button)
+    #for button in buttons:
         button.show()
         yield(get_tree().create_timer(TIME_TO_SHOW_ALL_BUTTONS / len(SKINS)), 'timeout')
     
@@ -115,5 +116,6 @@ func _on_BackButton_pressed():
     yield(get_tree().create_timer(TIME_FROM_HIDING_TO_TRANSITION), 'timeout')
     menu_transition.transition(self, main_menu, true)
     var skin_select_button = main_menu.get_node('Accent/SkinSelectButton')
+    main_menu.get_node('Accent/PlayButton').disabled = false
     skin_select_button.disabled = false
     skin_select_button._on_CircleButton_mouse_exited()
