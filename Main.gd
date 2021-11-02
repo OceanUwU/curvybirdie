@@ -73,8 +73,10 @@ func start_game(first_game):
     
     var skin = Save.get('skin_selected')
     var skins_unlocked = Save.get('skins_unlocked')
-    while skin == 'random':
-        skin = skins_unlocked[randi() % len(skins_unlocked)]
+    if skin == 'random':
+        if randi() % 200 != 0:
+            while skin == 'random':
+                skin = skins_unlocked[randi() % len(skins_unlocked)]
     
     bird = Bird.instance()
     bird.connect('score', self, 'score_a_point')
