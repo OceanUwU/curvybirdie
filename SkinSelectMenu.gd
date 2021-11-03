@@ -73,7 +73,8 @@ func show_skins():
         button.skin = skin
         button.direction = PI * (2.0 * skin[3] - 0.5)
         button.self_modulate = Globals.theme[1]
-        if skin_selected == skin[0]:
+        button.selected = skin_selected == skin[0]
+        if button.selected:
             button_selected = button
         else:
             button.self_modulate = Globals.theme[1].linear_interpolate(Globals.theme[0], DESELECTED_DARKEN_AMOUNT)
@@ -96,11 +97,13 @@ func select_skin(button):
     $Currency.text = str(Save.get('currency'))
     Save.set('skin_selected', button.skin[0])
     Save.save()
+    button_selected.select(false)
     $Tween.interpolate_property(button_selected, 'self_modulate', button_selected.self_modulate, Globals.theme[1].linear_interpolate(Globals.theme[0], DESELECTED_DARKEN_AMOUNT), BUTTON_ALPHA_CHANGE_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
-    button_selected = button
-    $Tween.interpolate_property(button_selected, 'self_modulate', button_selected.self_modulate, Globals.theme[1], BUTTON_ALPHA_CHANGE_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    button.select(true)
+    $Tween.interpolate_property(button, 'self_modulate', button.self_modulate, Globals.theme[1], BUTTON_ALPHA_CHANGE_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
+    button_selected = button
 
 func hide_skins():
     for i in range(len(buttons)-1, -1, -1):
@@ -116,6 +119,6 @@ func _on_BackButton_pressed():
     yield(get_tree().create_timer(TIME_FROM_HIDING_TO_TRANSITION), 'timeout')
     menu_transition.transition(self, main_menu, true)
     var skin_select_button = main_menu.get_node('Accent/SkinSelectButton')
-    main_menu.get_node('Accent/PlayButton').disabled = false
+    main_menu.set_buttons_disabled(false)
     skin_select_button.disabled = false
     skin_select_button._on_CircleButton_mouse_exited()

@@ -37,8 +37,10 @@ var menu_tween
 var walls 
 var bird
 var playing := true
+var hard : bool
 
 func _ready():
+    randomize()
     walls = [$Walls/Right, $Walls/Left]
     spikes = get_tree().get_nodes_in_group('spikes')
     theme_tween = $ThemeTween
@@ -49,11 +51,13 @@ func _ready():
     update_theme(0, 0.0)
     start_game(true) #testin
     $SkinSelectMenu.rect_scale = Vector2(0, 0)
+    $Stats.rect_scale = Vector2(0, 0)
     #$SkinSelectMenu.show_skins(theme)
 
 func start_game(first_game):
     playing = true
     score = 0
+    hard = Save.get('mode_is_hard')
     update_score_text()
     
     if !first_game: 
@@ -85,7 +89,7 @@ func start_game(first_game):
     bird.do_tutorial = first_game
     bird.skin = skin
     add_child(bird)
-    bird.start_game()
+    bird.start_game(hard)
 
 func update_score_text():
     $HUD/Score.text = str(score)
@@ -115,10 +119,12 @@ func game_over():
     bird = null
     
     #edit save
-    Save.set('total_score', Save.get('total_score') + score)
-    Save.set('lifetime_games_played', Save.get('lifetime_games_played') + 1)
+    var mode_suffix = '_hard' if hard else '_normal'
+    Save.set('total_score'+mode_suffix, Save.get('total_score'+mode_suffix) + score)
+    Save.set('lifetime_games_played'+mode_suffix, Save.get('lifetime_games_played'+mode_suffix) + 1)
     Save.set('currency', Save.get('currency') + score)
-    Save.set('best', max(score, Save.get('best')))
+    Save.set('previous_score'+mode_suffix, score)
+    Save.set('best'+mode_suffix, max(score, Save.get('best'+mode_suffix)))
     Save.save()
         
     menu_tween.interpolate_property($HUD, 'modulate:a', 1.0, 0.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
@@ -127,7 +133,7 @@ func game_over():
     
     $MainMenu.rect_scale = Vector2(1, 1)
     $MainMenu/Accent/Score/Score.text = str(score)
-    $MainMenu/Accent/Score/Best.text = str(Save.get('best'))
+    $MainMenu/Accent/Score/Best.text = str(Save.get('best'+mode_suffix))
     $MainMenu/Primary.modulate = Globals.theme[0]
     $MainMenu/Accent.modulate = Globals.theme[1]
     menu_tween.interpolate_property($MainMenu, 'modulate:a', 0.0, 1.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)

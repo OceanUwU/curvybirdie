@@ -6,15 +6,19 @@ signal die
 const INITIAL_SPEED := 130.0
 const MAX_SPEED := 250.0
 const SPEED_INCREASE := (MAX_SPEED - INITIAL_SPEED) / Globals.FINAL_SCORE
+const INITAL_SPEED_HARD := 210.0
+const SPEED_INCREASE_HARD := (MAX_SPEED - INITAL_SPEED_HARD) / Globals.FINAL_SCORE
 const INITIAL_GRAVITY := 11.4
+const GRAVITY_SCALE := 130.0
 const TRAIL_INTERVAL := 0.2
 const ROTATION_SCALE := 0.12
 const TUTORIAL_EASE_TIME := 1.3
+const TUTORIAL_EASE_TIME_HARD := 0.98
+const FLAP_TIME := 0.18
 
 export (PackedScene) var Trail
 export (PackedScene) var DeathParticles
 export (Material) var DeadMaterial
-var flap_time := 0.18
 var skin : String
 var dead_eye_texture
 var trail_texture
@@ -31,11 +35,13 @@ var time_since_last_trail := 0.0
 var moving := false
 var last_score_time := 0
 var time_scale := 1.0
+var hard : bool
 
 var flying_audio
 var wing
 var wing_tween
 var tutorial
+var tutorial_ease_time : float
 
 func _ready():
     flying_audio = $FlyingAudio
@@ -54,13 +60,18 @@ func _ready():
     trail_texture = load(skin_location+'trail.png')
     
 
-func start_game():
+func start_game(is_hard):
+    hard = is_hard
     playing = true
     moving = true
     input_allowed = false
     modulate.a = 0
+    if hard:
+        velocity.x = INITAL_SPEED_HARD
+        current_gravity = INITIAL_GRAVITY * (velocity.x / GRAVITY_SCALE)
     $Tween.interpolate_property(self, 'modulate:a', 0.0, 1.0, 0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
+    tutorial_ease_time = TUTORIAL_EASE_TIME_HARD if hard else TUTORIAL_EASE_TIME
     if do_tutorial:
         initiate_tutorial()
     else:
@@ -70,18 +81,18 @@ func start_game():
 
 func initiate_tutorial():
     tutorial_active = true
-    $Tween.interpolate_property(self, 'time_scale', 1.0, 0.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'time_scale', 1.0, 0.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
-    $Tween.interpolate_property(tutorial, 'modulate:a', 0.0, 1.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property(tutorial, 'modulate:a', 0.0, 1.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     yield($Tween, 'tween_completed')
     input_allowed = true
 
 func end_tutorial():
     tutorial_active = false
-    $Tween.interpolate_property(self, 'time_scale', time_scale, 1.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'time_scale', time_scale, 1.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
-    $Tween.interpolate_property(tutorial, 'modulate:a', tutorial.modulate.a, 0.0, TUTORIAL_EASE_TIME, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.interpolate_property(tutorial, 'modulate:a', tutorial.modulate.a, 0.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
     yield($Tween, 'tween_completed')
     $CollisionPolygon2D.disabled = false
@@ -123,7 +134,7 @@ func _physics_process(delta):
 func _process(_delta):
     $FlyingAudio.adjust(velocity.y * 0.017)
     if flapping && !wing_tween.is_active(): #if !wing_tween.is_active() && (flapping || wing.scale.y < 0):
-        wing_tween.interpolate_property(wing, 'scale:y', wing.scale.y, wing.scale.y * -1, flap_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+        wing_tween.interpolate_property(wing, 'scale:y', wing.scale.y, wing.scale.y * -1, FLAP_TIME, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
         wing_tween.start()
 
 func _on_Bird_area_shape_entered(_area_id, area, _area_shape, _local_shape):
@@ -134,8 +145,8 @@ func _on_Bird_area_shape_entered(_area_id, area, _area_shape, _local_shape):
         flapped = false
         
         #speed up
-        velocity.x = min(abs(velocity.x)+SPEED_INCREASE, MAX_SPEED) * (1 if rightwards else -1)
-        current_gravity = INITIAL_GRAVITY * (abs(velocity.x) / INITIAL_SPEED)
+        velocity.x = min(abs(velocity.x)+(SPEED_INCREASE_HARD if hard else SPEED_INCREASE), MAX_SPEED) * (1 if rightwards else -1)
+        current_gravity = INITIAL_GRAVITY * (abs(velocity.x) / GRAVITY_SCALE)
         
         #score a point
         $ScoreAudio.play()

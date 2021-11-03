@@ -2,8 +2,7 @@ extends CircleButton
 
 signal select
 
-const Bird := preload('res://Bird.tscn')
-const FLAP_TIME := 0.417
+const Bird := preload('res://DisplayBird.tscn')
 const LIGHT_MASK := 2
 const CENTRE := Vector2(150, 350)
 const START_DISTANCE_FROM_CENTRE := 95.0
@@ -14,6 +13,8 @@ var skin_tween : Tween
 var direction : float = PI * (2.0 / 12)
 var skin : Array
 var locked : bool
+var selected : bool
+var bird
 
 func _init():
     #texture_normal = preload('res://assets/circlebutton.png')
@@ -26,17 +27,24 @@ func _ready():
     mask(self)
 
 func add_bird():
-    var bird = Bird.instance()
+    bird = Bird.instance()
     bird.skin = skin[0]
     if bird.skin == 'random':
         bird.modulate = Globals.theme[0]
     bird.position = Vector2(50, 50)
-    bird.flap_time = FLAP_TIME
-    bird.flapping = true
     mask(bird)
     add_child(bird)
     move_child(bird, 0)
+    if selected:
+        yield(bird, 'ready')
+        select(true)
 
+func select(now_selected):
+    selected = now_selected
+    if selected:
+        bird.get_node('Beak').open()
+    else:
+        bird.get_node('Beak').close()
 
 func mask(node):
     if 'light_mask' in node:
