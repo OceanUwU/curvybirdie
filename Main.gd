@@ -31,7 +31,6 @@ const MAIN_MENU_SHOW_TIME := 0.6
 
 export (PackedScene) var Bird
 var score : int
-var spikes := []
 var theme_tween
 var menu_tween
 var walls 
@@ -42,7 +41,6 @@ var hard : bool
 func _ready():
     randomize()
     walls = [$Walls/Right, $Walls/Left]
-    spikes = get_tree().get_nodes_in_group('spikes')
     theme_tween = $ThemeTween
     menu_tween = $MenuTween
     $MainMenu.rect_scale = Vector2(0, 0)
@@ -95,7 +93,7 @@ func update_score_text():
     $HUD/Score.text = str(score)
     $HUD/Score.rect_scale = Vector2(1, 1) * TEXT_SIZES[min(len(str(score)), len(TEXT_SIZES))]
 
-func update_theme(s, transition_time):
+func update_theme(s, transition_time, main_menu=false):
     Globals.theme = THEMES[min(floor(s / THEME_CHANGE_INTERVAL), len(THEMES)-1)]
     theme_tween.interpolate_property($Background, 'color', $Background.color, Globals.theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
@@ -103,20 +101,27 @@ func update_theme(s, transition_time):
     theme_tween.start()
     theme_tween.interpolate_property($Accent, 'color', $Accent.color, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     theme_tween.start()
-    for spike in spikes:
-        var spike_polygon = spike.get_node('Polygon2D')
-        theme_tween.interpolate_property(spike_polygon, 'color', spike_polygon.color, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-
+    theme_tween.interpolate_property($Walls, 'modulate', $Walls.modulate, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+    theme_tween.start()
+    if main_menu:
+        theme_tween.interpolate_property($MainMenu/Primary, 'modulate', $MainMenu/Primary.modulate, Globals.theme[0], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+        theme_tween.start()
+        theme_tween.interpolate_property($MainMenu/Accent, 'modulate', $MainMenu/Accent.modulate, Globals.theme[1], transition_time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+        theme_tween.start()
+    
 func score_a_point():
-    score += 1
-    update_score_text()
-    if score % THEME_CHANGE_INTERVAL == 0:
-        update_theme(score, THEME_CHANGE_TIME)
-    walls[int(bird.rightwards)].reset(score+1)
+    if bird:
+        score += 1
+        update_score_text()
+        if score % THEME_CHANGE_INTERVAL == 0:
+            update_theme(score, THEME_CHANGE_TIME)
+        walls[int(bird.rightwards)].reset(score+1)
 
 func game_over():
     playing = false
     bird = null
+    for i in walls:
+        i.tween.remove_all()
     
     #edit save
     var mode_suffix = '_hard' if hard else '_normal'

@@ -34,7 +34,6 @@ func reset(score):
             down = true
             _on_Tween_tween_all_completed()
         else:
-            tween.remove_all()
             $ResetTween.interpolate_property(self, 'position:y', position.y, initial_y, spikes[0].ENABLE_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
             $ResetTween.start()
     

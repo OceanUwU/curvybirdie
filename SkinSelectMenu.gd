@@ -41,6 +41,7 @@ const SKINS = [ #[name, price, layer, angle]
     ['random', 40, 3.5, 1.0/2],
     ['default34', 0, 4, 14.8/26],
 ]
+const TEXTURE_PATHS := ['beakbottom', 'beaktop', 'body', 'eye', 'wing']
 const TIME_UNTIL_SKINS_SHOWED := 0.7
 const TIME_TO_SHOW_ALL_BUTTONS := 1.2
 const TIME_FROM_HIDING_TO_TRANSITION := 1.9
@@ -48,10 +49,18 @@ const DESELECTED_DARKEN_AMOUNT := 0.8
 const BUTTON_ALPHA_CHANGE_TIME := 0.3
 
 export (PackedScene) var SkinButton
+var skin_textures := []
 var buttons := []
 var button_selected
 var main_menu : Control
 var menu_transition : TextureRect
+
+func _init():
+    for i in SKINS:
+        var textures = []
+        for j in TEXTURE_PATHS:
+            textures.append(load('res://assets/birds/'+i[0]+'/'+j+'.png'))
+        skin_textures.append(textures)
 
 func _ready():
     main_menu = get_node('../MainMenu')
@@ -84,7 +93,7 @@ func show_skins():
         else:
             button.get_node('Lock').queue_free()
         button.connect('select', self, 'select_skin', [button])
-        button.add_bird()
+        button.add_bird(skin_textures[i])
         add_child(button)
         buttons.append(button)
     #for button in buttons:

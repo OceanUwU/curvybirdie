@@ -5,17 +5,18 @@ const FLAP_TIME := 0.42
 var skin
 var tween
 var wing
+var textures
 
 func _ready():
     tween = $Tween
     wing = $Wing
     
     var skin_location = 'res://assets/birds/'+skin+'/'
-    $Beak/Bottom.texture = load(skin_location+'beakbottom.png')
-    $Beak/Top.texture = load(skin_location+'beaktop.png')
-    $Body.texture = load(skin_location+'body.png')
-    $Eye.texture = load(skin_location+'eye.png')
-    $Wing.texture = load(skin_location+'wing.png')
+    $Beak/Bottom.texture = textures[0]
+    $Beak/Top.texture = textures[1]
+    $Body.texture = textures[2]
+    $Eye.texture = textures[3]
+    $Wing.texture = textures[4]
     
     tween_wing()
 

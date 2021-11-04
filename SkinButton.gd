@@ -26,9 +26,10 @@ func _init():
 func _ready():
     mask(self)
 
-func add_bird():
+func add_bird(textures):
     bird = Bird.instance()
     bird.skin = skin[0]
+    bird.textures = textures
     if bird.skin == 'random':
         bird.modulate = Globals.theme[0]
     bird.position = Vector2(50, 50)

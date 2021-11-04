@@ -12,5 +12,6 @@ const DEFAULT_DATA = {
     'currency': 0,
     'skins_unlocked': ['default'],
     'skin_selected': 'default',
-    'mode_is_hard': false
+    'mode_is_hard': false,
+    'muted': false
 }
