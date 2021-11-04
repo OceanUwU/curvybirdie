@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/trail.png-9adc053f49455d498d2a6b1b7410c39e.stex"
+path="res://.import/eye.png-bb4a1f7032727d5c7fedc74d50b4f392.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/birds/default24/trail.png"
-dest_files=[ "res://.import/trail.png-9adc053f49455d498d2a6b1b7410c39e.stex" ]
+source_file="res://assets/birds/aeroplane/eye.png"
+dest_files=[ "res://.import/eye.png-bb4a1f7032727d5c7fedc74d50b4f392.stex" ]
 
 [params]
 

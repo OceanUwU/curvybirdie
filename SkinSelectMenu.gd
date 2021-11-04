@@ -22,7 +22,7 @@ const SKINS = [ #[name, price, layer, angle]
     ['star', 0, 2, 2.0/20],
     ['default30', 0, 2, 8.0/20],
     ['default31', 0, 2, 9.0/20],
-    ['default24', 0, 2, 11.0/20],
+    ['aeroplane', 0, 2, 11.0/20],
     ['default25', 0, 2, 12.0/20],
     
     ['angel', 0, 3, 24.0/26],

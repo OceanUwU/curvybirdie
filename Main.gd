@@ -143,3 +143,4 @@ func game_over():
     $MainMenu/Accent.modulate = Globals.theme[1]
     menu_tween.interpolate_property($MainMenu, 'modulate:a', 0.0, 1.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     menu_tween.start()
+    $MainMenu.set_buttons_disabled(false)

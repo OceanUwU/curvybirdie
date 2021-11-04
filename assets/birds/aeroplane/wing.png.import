@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/beaktop.png-c2c956b5c1525d8b63307e53e4702956.stex"
+path="res://.import/wing.png-e358c1e396c79dee6037974db36d650b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/birds/default24/beaktop.png"
-dest_files=[ "res://.import/beaktop.png-c2c956b5c1525d8b63307e53e4702956.stex" ]
+source_file="res://assets/birds/aeroplane/wing.png"
+dest_files=[ "res://.import/wing.png-e358c1e396c79dee6037974db36d650b.stex" ]
 
 [params]
 

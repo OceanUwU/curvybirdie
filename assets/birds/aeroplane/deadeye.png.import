@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/body.png-bca5981ddc64e7d554c1a4a84944be3f.stex"
+path="res://.import/deadeye.png-62707014296e02e7d24ef940313a05cc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/birds/default24/body.png"
-dest_files=[ "res://.import/body.png-bca5981ddc64e7d554c1a4a84944be3f.stex" ]
+source_file="res://assets/birds/aeroplane/deadeye.png"
+dest_files=[ "res://.import/deadeye.png-62707014296e02e7d24ef940313a05cc.stex" ]
 
 [params]
 

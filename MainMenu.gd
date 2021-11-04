@@ -21,7 +21,7 @@ func _ready():
 func _on_PlayButton_pressed():
     if !get_parent().playing:
         get_parent().start_game(false)
-
+        set_buttons_disabled(true)
 
 func _on_SkinSelectButton_pressed():
     set_buttons_disabled(true)
@@ -58,6 +58,7 @@ func set_buttons_disabled(disabled):
     $Accent/SkinSelectButton.disabled = disabled
     $Accent/PlayButton.disabled = disabled
     $Accent/StatsButton.disabled = disabled
+    $Accent/ModeChanger.disabled = disabled
 
 
 func _on_MuteButton_pressed():
