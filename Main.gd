@@ -26,8 +26,14 @@ const THEMES := [
     [Color(0.00, 0.00, 0.00), Color(1.00, 0.00, 0.00)], #100
 ]
 const THEME_CHANGE_TIME := 0.5
-
 const MAIN_MENU_SHOW_TIME := 0.6
+
+const NORMAL_ACHIEVEMENTS := ['CgkIqLj8oPITEAIQBQ', 'CgkIqLj8oPITEAIQBg', 'CgkIqLj8oPITEAIQBw', 'CgkIqLj8oPITEAIQCA', 'CgkIqLj8oPITEAIQEg', 'CgkIqLj8oPITEAIQCg']
+const NORMAL_LEADERBOARD := 'CgkIqLj8oPITEAIQDw'
+const HARD_ACHIEVEMENTS := ['CgkIqLj8oPITEAIQCw', 'CgkIqLj8oPITEAIQDA', 'CgkIqLj8oPITEAIQDQ', 'CgkIqLj8oPITEAIQDg']
+const HARD_LEADERBOARD := 'CgkIqLj8oPITEAIQEA'
+const BIRD_ACHIEVEMENTS := ['CgkIqLj8oPITEAIQAA', 'CgkIqLj8oPITEAIQAQ', 'CgkIqLj8oPITEAIQAg', 'CgkIqLj8oPITEAIQAw', 'CgkIqLj8oPITEAIQBA']
+const HUESHIFT_ACHIEVEMENT := 'CgkIqLj8oPITEAIQCQ'
 
 export (PackedScene) var Bird
 var score : int
@@ -37,6 +43,8 @@ var walls
 var bird
 var playing := true
 var hard : bool
+
+var play_games_services
 
 func _ready():
     randomize()
@@ -51,6 +59,15 @@ func _ready():
     $SkinSelectMenu.rect_scale = Vector2(0, 0)
     $Stats.rect_scale = Vector2(0, 0)
     #$SkinSelectMenu.show_skins(theme)
+    
+    #google play services
+    if Engine.has_singleton("GodotPlayGamesServices"):
+        play_games_services = Engine.get_singleton("GodotPlayGamesServices")
+        play_games_services.init(true,false,false,"")
+        play_games_services.signIn()
+
+func play_ready():
+    return typeof(play_games_services) != 0 && play_games_services.isSignedIn()
 
 func start_game(first_game):
     playing = true
@@ -144,3 +161,25 @@ func game_over():
     menu_tween.interpolate_property($MainMenu, 'modulate:a', 0.0, 1.0, MAIN_MENU_SHOW_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     menu_tween.start()
     $MainMenu.set_buttons_disabled(false)
+    
+    if play_ready():
+        play_games_services.submitLeaderBoardScore(HARD_LEADERBOARD if hard else NORMAL_LEADERBOARD, score)
+        for i in (HARD_ACHIEVEMENTS if hard else NORMAL_ACHIEVEMENTS):
+            play_games_services.setAchievementSteps(i, score)
+
+func unlock_hue_shift():
+    if play_ready():
+        play_games_services.unlockAchievement(HUESHIFT_ACHIEVEMENT)
+
+func unlock_skin():
+    if play_ready():
+        for i in BIRD_ACHIEVEMENTS:
+            play_games_services.setAchievementSteps(i, len(Save.get('skins_unlocked')))
+
+func show_leaderboards():
+    if play_ready():
+        play_games_services.showLeaderBoard(HARD_LEADERBOARD if Save.get('mode_is_hard') else NORMAL_LEADERBOARD)
+
+func show_achievements():
+    if play_ready():
+        play_games_services.showAchievements()

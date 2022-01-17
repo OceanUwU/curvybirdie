@@ -41,6 +41,7 @@ var flying_audio
 var wing
 var wing_tween
 var tutorial
+var walls
 var tutorial_ease_time : float
 
 func _ready():
@@ -48,6 +49,7 @@ func _ready():
     wing = $Wing
     wing_tween = $Wing/Tween
     tutorial = get_node('/root/Main/Tutorial')
+    walls = get_node('/root/Main').walls
     
     #apply textures
     var skin_location = 'res://assets/birds/'+skin+'/'
@@ -83,6 +85,9 @@ func initiate_tutorial():
     tutorial_active = true
     $Tween.interpolate_property(self, 'time_scale', 1.0, 0.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
+    for i in walls:
+        $Tween.interpolate_property(i.tween, 'playback_speed', 1.0, 0.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
+        $Tween.start()
     $Tween.interpolate_property(tutorial, 'modulate:a', 0.0, 1.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     yield($Tween, 'tween_completed')
@@ -92,6 +97,9 @@ func end_tutorial():
     tutorial_active = false
     $Tween.interpolate_property(self, 'time_scale', time_scale, 1.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
+    for i in walls:
+        $Tween.interpolate_property(i.tween, 'playback_speed', i.tween.playback_speed, 1.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
+        $Tween.start()
     $Tween.interpolate_property(tutorial, 'modulate:a', tutorial.modulate.a, 0.0, tutorial_ease_time, Tween.TRANS_QUAD, Tween.EASE_IN)
     $Tween.start()
     yield($Tween, 'tween_completed')
@@ -133,7 +141,7 @@ func _physics_process(delta):
 
 func _process(_delta):
     $FlyingAudio.adjust(velocity.y * 0.017)
-    if flapping && !wing_tween.is_active(): #if !wing_tween.is_active() && (flapping || wing.scale.y < 0):
+    if !wing_tween.is_active() && (flapping || (skin == 'originality' && wing.scale.y < 0)): #if !wing_tween.is_active() && (flapping || wing.scale.y < 0):
         wing_tween.interpolate_property(wing, 'scale:y', wing.scale.y, wing.scale.y * -1, FLAP_TIME, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
         wing_tween.start()
 

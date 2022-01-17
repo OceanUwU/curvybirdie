@@ -1,0 +1,151 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="lol.ocean.curvybirdie"
+4    android:installLocation="auto"
+5    android:versionCode="1"
+6    android:versionName="0.9" > <!-- glEsVersion is modified by the exporter, changing this value here has no effect. -->
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="30" />
+10
+11    <supports-screens
+11-->D:\code\curvybirdie\android\build\AndroidManifest.xml:12:5-16:40
+12        android:largeScreens="true"
+12-->D:\code\curvybirdie\android\build\AndroidManifest.xml:15:9-36
+13        android:normalScreens="true"
+13-->D:\code\curvybirdie\android\build\AndroidManifest.xml:14:9-37
+14        android:smallScreens="true"
+14-->D:\code\curvybirdie\android\build\AndroidManifest.xml:13:9-36
+15        android:xlargeScreens="true" />
+15-->D:\code\curvybirdie\android\build\AndroidManifest.xml:16:9-37
+16
+17    <uses-feature
+17-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:10:5-78
+18        android:glEsVersion="0x00030000"
+18-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:10:19-51
+19        android:required="true" />
+19-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:10:52-75
+20
+21    <instrumentation
+21-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:11:5-16:54
+22        android:name=".GodotInstrumentation"
+22-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:13:9-45
+23        android:icon="@mipmap/icon"
+23-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:14:9-36
+24        android:label="@string/godot_project_name_string"
+24-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:15:9-58
+25        android:targetPackage="lol.ocean.$genname" />
+25-->D:\code\curvybirdie\android\build\src\release\AndroidManifest.xml:16:9-51
+26
+27    <uses-permission android:name="android.permission.INTERNET" />
+27-->[GodotPlayGamesServices.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9836ec4e951e5bc000494a2f6bc15710\jetified-GodotPlayGamesServices.release\AndroidManifest.xml:11:5-67
+27-->[GodotPlayGamesServices.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9836ec4e951e5bc000494a2f6bc15710\jetified-GodotPlayGamesServices.release\AndroidManifest.xml:11:22-64
+28
+29    <application
+29-->D:\code\curvybirdie\android\build\AndroidManifest.xml:31:5-76:19
+30        android:allowBackup="false"
+30-->D:\code\curvybirdie\android\build\AndroidManifest.xml:31:68-95
+31        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+31-->[androidx.core:core:1.2.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9f2af2327a2ee4df66d476977a324666\core-1.2.0\AndroidManifest.xml:24:18-86
+32        android:icon="@mipmap/icon"
+32-->D:\code\curvybirdie\android\build\AndroidManifest.xml:31:181-208
+33        android:label="@string/godot_project_name_string"
+33-->D:\code\curvybirdie\android\build\AndroidManifest.xml:31:18-67
+34        android:requestLegacyExternalStorage="false" >
+34-->D:\code\curvybirdie\android\build\AndroidManifest.xml:31:136-180
+35        <activity
+35-->D:\code\curvybirdie\android\build\AndroidManifest.xml:53:9-70:20
+36            android:name="com.godot.game.GodotApp"
+36-->D:\code\curvybirdie\android\build\AndroidManifest.xml:54:13-37
+37            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
+37-->D:\code\curvybirdie\android\build\AndroidManifest.xml:59:13-141
+38            android:label="@string/godot_project_name_string"
+38-->D:\code\curvybirdie\android\build\AndroidManifest.xml:55:13-62
+39            android:launchMode="singleTask"
+39-->D:\code\curvybirdie\android\build\AndroidManifest.xml:57:13-44
+40            android:resizeableActivity="false"
+40-->D:\code\curvybirdie\android\build\AndroidManifest.xml:60:13-47
+41            android:screenOrientation="portrait"
+41-->D:\code\curvybirdie\android\build\AndroidManifest.xml:58:13-50
+42            android:theme="@style/GodotAppSplashTheme" >
+42-->D:\code\curvybirdie\android\build\AndroidManifest.xml:56:13-55
+43            <intent-filter>
+43-->D:\code\curvybirdie\android\build\AndroidManifest.xml:66:13-69:29
+44                <action android:name="android.intent.action.MAIN" />
+44-->D:\code\curvybirdie\android\build\AndroidManifest.xml:67:17-69
+44-->D:\code\curvybirdie\android\build\AndroidManifest.xml:67:25-66
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+46-->D:\code\curvybirdie\android\build\AndroidManifest.xml:68:17-77
+46-->D:\code\curvybirdie\android\build\AndroidManifest.xml:68:27-74
+47            </intent-filter>
+48        </activity>
+49        <!-- Records the version of the Godot editor used for building -->
+50        <meta-data
+51            android:name="org.godotengine.editor.version"
+52            android:value="3.3.3.stable" /> <!-- PGSGP -->
+53        <meta-data
+53-->D:\code\curvybirdie\android\build\AndroidManifest.xml:39:3-40:37
+54            android:name="com.google.android.gms.games.APP_ID"
+54-->D:\code\curvybirdie\android\build\AndroidManifest.xml:39:14-64
+55            android:value="@string/app_id" />
+55-->D:\code\curvybirdie\android\build\AndroidManifest.xml:40:4-34
+56        <meta-data
+56-->D:\code\curvybirdie\android\build\AndroidManifest.xml:42:3-43:59
+57            android:name="com.google.android.gms.version"
+57-->D:\code\curvybirdie\android\build\AndroidManifest.xml:42:14-59
+58            android:value="@integer/google_play_services_version" />
+58-->D:\code\curvybirdie\android\build\AndroidManifest.xml:43:4-57
+59        <meta-data
+59-->[GodotPlayGamesServices.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9836ec4e951e5bc000494a2f6bc15710\jetified-GodotPlayGamesServices.release\AndroidManifest.xml:14:9-16:74
+60            android:name="org.godotengine.plugin.v1.GodotPlayGamesServices"
+60-->[GodotPlayGamesServices.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9836ec4e951e5bc000494a2f6bc15710\jetified-GodotPlayGamesServices.release\AndroidManifest.xml:15:13-76
+61            android:value="io.cgisca.godot.gpgs.PlayGameServicesGodot" /> <!-- Records the version of the Godot library -->
+61-->[GodotPlayGamesServices.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\9836ec4e951e5bc000494a2f6bc15710\jetified-GodotPlayGamesServices.release\AndroidManifest.xml:16:13-71
+62        <meta-data
+62-->[godot-lib.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\0c34d097d652ad56bfc91f68f7d385c1\jetified-godot-lib.release\AndroidManifest.xml:20:9-22:44
+63            android:name="org.godotengine.library.version"
+63-->[godot-lib.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\0c34d097d652ad56bfc91f68f7d385c1\jetified-godot-lib.release\AndroidManifest.xml:21:13-59
+64            android:value="3.3.3.stable" />
+64-->[godot-lib.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\0c34d097d652ad56bfc91f68f7d385c1\jetified-godot-lib.release\AndroidManifest.xml:22:13-41
+65
+66        <service android:name="org.godotengine.godot.GodotDownloaderService" />
+66-->[godot-lib.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\0c34d097d652ad56bfc91f68f7d385c1\jetified-godot-lib.release\AndroidManifest.xml:24:9-80
+66-->[godot-lib.release.aar] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\0c34d097d652ad56bfc91f68f7d385c1\jetified-godot-lib.release\AndroidManifest.xml:24:18-77
+67
+68        <activity
+68-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:23:9-27:75
+69            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+69-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:24:13-93
+70            android:excludeFromRecents="true"
+70-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:25:13-46
+71            android:exported="false"
+71-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:26:13-37
+72            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+72-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:27:13-72
+73        <!--
+74            Service handling Google Sign-In user revocation. For apps that do not integrate with
+75            Google Sign-In, this service will never be started.
+76        -->
+77        <service
+77-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:33:9-37:51
+78            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+78-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:34:13-89
+79            android:exported="true"
+79-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:35:13-36
+80            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+80-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:36:13-107
+81            android:visibleToInstantApps="true" />
+81-->[com.google.android.gms:play-services-auth:19.0.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\247bb1fbfbce1be9b840df309cd1295b\jetified-play-services-auth-19.0.0\AndroidManifest.xml:37:13-48
+82
+83        <activity
+83-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\52d01a2caeef298d3375df58ee77f395\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
+84            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+84-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\52d01a2caeef298d3375df58ee77f395\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+85            android:exported="false"
+85-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\52d01a2caeef298d3375df58ee77f395\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
+86            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+86-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\Flynn\.gradle\caches\transforms-2\files-2.1\52d01a2caeef298d3375df58ee77f395\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+87    </application>
+88
+89</manifest>

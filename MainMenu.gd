@@ -6,6 +6,7 @@ const NORMAL_ICON_TEXTURE = preload('res://assets/normalicon.png')
 const HARD_ICON_TEXTURE = preload('res://assets/hardicon.png')
 const MUTED_TEXTURE = preload('res://assets/mutedbutton.png')
 const NOT_MUTED_TEXTURE = preload('res://assets/soundbutton.png')
+const MODE_CHANGES_FOR_HUESHIFT_ACHIEVEMENT := 250
 
 var skin_select_menu : Control
 var stats : Control
@@ -31,7 +32,11 @@ func _on_SkinSelectButton_pressed():
 func _on_ModeChanger_pressed():
     var hard = !Save.get('mode_is_hard')
     Save.set('mode_is_hard', hard)
+    Save.set('times_mode_changed', Save.get('times_mode_changed')+1)
     Save.save()
+    if Save.get('times_mode_changed') > MODE_CHANGES_FOR_HUESHIFT_ACHIEVEMENT:
+        get_node('/root/Main').unlock_hue_shift()
+        Save.set('times_mode_changed', 0)
     update_mode_texture(true)
 
 func update_mode_texture(update_theme):
@@ -70,3 +75,10 @@ func _on_MuteButton_pressed():
 func update_muted(muted):
     $Accent/MuteButton.texture_normal = MUTED_TEXTURE if muted else NOT_MUTED_TEXTURE
     AudioServer.set_bus_mute(AudioServer.get_bus_index('Master'), muted)
+
+
+func _on_LeaderboardsButton_pressed():
+    get_node('/root/Main').show_leaderboards()
+
+func _on_AchievementsButton_pressed():
+    get_node('/root/Main').show_achievements()

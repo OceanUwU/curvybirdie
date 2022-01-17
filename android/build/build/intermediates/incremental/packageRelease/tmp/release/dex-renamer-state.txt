@@ -1,0 +1,4 @@
+#Sat Jan 08 17:56:12 GMT 2022
+base.0=D\:\\code\\curvybirdie\\android\\build\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

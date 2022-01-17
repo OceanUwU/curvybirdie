@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Wall.gd" type="Script" id=1]
+[ext_resource path="res://Spike.tscn" type="PackedScene" id=2]
+
+[node name="Wall" type="Node2D"]
+script = ExtResource( 1 )
+Spike = ExtResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="ResetTween" type="Tween" parent="."]
+
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

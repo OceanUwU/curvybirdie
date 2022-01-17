@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://SkinButton.gd" type="Script" id=1]
+[ext_resource path="res://assets/circlebutton.png" type="Texture" id=2]
+[ext_resource path="res://Lock.tscn" type="PackedScene" id=3]
+
+[node name="SkinButton" type="TextureButton"]
+light_mask = 2
+margin_right = 100.0
+margin_bottom = 100.0
+rect_scale = Vector2( 0.6, 0.6 )
+rect_pivot_offset = Vector2( 20, 20 )
+texture_normal = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lock" parent="." instance=ExtResource( 3 )]

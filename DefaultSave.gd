@@ -10,6 +10,7 @@ const DEFAULT_DATA = {
     'lifetime_games_played_hard': 0,
     'previous_score_hard': 0,
     'currency': 0,
+    'times_mode_changed': 0,
     'skins_unlocked': ['default'],
     'skin_selected': 'default',
     'mode_is_hard': false,

@@ -27,7 +27,7 @@ const SKINS = [ #[name, price, layer, angle]
     
     ['angel', 300, 3, 24.0/26],
     ['demon', 400, 3, 25.0/26],
-    ['originality', 850, 3, 0.0/26],
+    ['water', 250, 3, 0.0/26],
     ['dizzy', 350, 3, 1.0/26],
     ['storm', 900, 3, 2.0/26],
     ['sus', 450, 3, 11.0/26],
@@ -39,7 +39,7 @@ const SKINS = [ #[name, price, layer, angle]
     ['bee', 700, 4, 1.8/26],
     ['floob', 950, 4, 11.2/26],
     ['random', 0, 3.5, 1.0/2],
-    ['water', 250, 4, 14.8/26],
+    ['originality', 850, 4, 14.8/26],
 ]
 const TEXTURE_PATHS := ['beakbottom', 'beaktop', 'body', 'eye', 'wing']
 const TIME_UNTIL_SKINS_SHOWED := 0.7

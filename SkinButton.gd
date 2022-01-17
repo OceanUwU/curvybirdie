@@ -81,6 +81,7 @@ func _pressed():
         Save.set('skins_unlocked', skins_unlocked)
         Save.set('currency', Save.get('currency') - skin[1])
         Save.save()
+        get_node('/root/Main').unlock_skin()
         locked = false
         $Lock/AnimationPlayer.play('unlock')
     emit_signal('select')
